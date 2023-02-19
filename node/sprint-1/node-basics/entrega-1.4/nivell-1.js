@@ -48,5 +48,28 @@ const getSalary = (employee) => new Promise((resolve, reject) => {
 })
 
 async function getEmployeeDetailsById(employeeId){
-    return g
+
+    const employee = await getEmployee(employeeId)
+    const salary = await getSalary(employee)
+    console.log(`Empleat: ${employee.name}. Salari: ${salary}`)
 }
+
+getEmployeeDetailsById(2)
+
+/* - Exercici 2
+
+Crea una nova funció asíncrona que cridi a una altra que retorni una Promise
+ que efectuï la seva funció resolve() després de 2 segons de la seva invocació.
+*/
+
+function retornaPromise() {
+    return new Promise( resolve => {
+        setTimeout(() => resolve('Executat'),2000)
+    });
+}
+
+async function executaPromise(){
+    console.log(await retornaPromise())
+}
+
+executaPromise()
