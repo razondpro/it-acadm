@@ -40,56 +40,61 @@ function deleteFile(path, cb){
 }
 /**
  * Rep un string y l'encripta 
+ * https://gist.githubusercontent.com/anned20/fcb3a97e8281b608bfcb4d046a640fe7/raw/75db3ee1159e53a08fa1709dd9e7eeef1414958f/encryption.js
  * @param {string} dataToEncrypt text a encriptar
  * @param {Object} encryptionData opcions d'encriptacio
  * @returns encrypted data
  */
 function encrypt(dataToEncrypt, encryptionData) {
     // Creating Cipheriv with its parameter
-    let cipher = crypto.createCipheriv(
+    const cipher = crypto.createCipheriv(
         encryptionData.algorithm, 
         Buffer.from(encryptionData.key),
         encryptionData.iv)
 
-    // Updating text
-    let encrypted = cipher.update(dataToEncrypt)
-
     // Using concatenation
-    encrypted = Buffer.concat([encrypted, cipher.final()])
+    encrypted = Buffer.concat([
+        encryptionData.iv, 
+        cipher.update(dataToEncrypt), 
+        cipher.final()
+    ])
 
     // Returning encrypted data
     return encrypted
 }
 /**
  * Rep un string y el desencripta 
+ * https://gist.githubusercontent.com/anned20/fcb3a97e8281b608bfcb4d046a640fe7/raw/75db3ee1159e53a08fa1709dd9e7eeef1414958f/encryption.js
  * @param {string} dataToEncrypt text a desencriptar
  * @param {Object} encryptionData opcions d'desencriptacio
+ * @param {string} encode tipus de encode del text
  * @returns decrypted data
  */
-function decrypt(dataToDecrypt, encryptionData){
-    let iv = Buffer.from(encryptionData.iv, 'hex');
-    let encryptedText = Buffer.from(dataToDecrypt, 'hex');
+function decrypt(dataToDecrypt, encryptionData, encode){
+
+    const iv = dataToDecrypt.slice(0, 16);
+    const encryptedText = dataToDecrypt.slice(16);
     
     // Creating Decipher
-    let decipher = crypto.createDecipheriv(
+    const decipher = crypto.createDecipheriv(
         encryptionData.algorithm, Buffer.from(encryptionData.key), iv);
-    
-    // Updating encrypted text
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    
-    // returns data after decryption
-    return decrypted.toString();
+
+    return Buffer.concat([decipher.update(encryptedText), decipher.final()]);
 }
 
 /**
+ * Funció que executará la segona part de l'exercici
+ * --Crea una funció que guardi els fitxers del punt anterior, ara encriptats
+ * amb l'algoritme aes-192-cbc, i esborri els fitxers inicials.--
  * Encripta els fitxers hex y base64 creat abans y les elimina despres
  * de crear els nous fitxers encriptats
- * @param {Object} encryptionData 
+ * @param {Object} filePaths direccio de fitxer
+ * @param {Object} encryptionData dades d'encriptacio
+ * @param {Object} encoding tipus de encodes de fitxers
  */
 function encriptaFitxers(filePaths, encryptionData, encoding){
 
-    // llegim..creem i eliminem
+    // llegim..creem i eliminem base64
     readSomethingFromFile(filePaths.base64,(err, data) => {
         const encryptedData = encrypt(data, encryptionData)
         writeSomethingToFile(encryptedData, filePaths.base64Encrypted, encoding.base64, (err, data) => {
@@ -100,6 +105,7 @@ function encriptaFitxers(filePaths, encryptionData, encoding){
         })
     }, encoding.base64)
 
+    // llegim..creem i eliminem hex
     readSomethingFromFile(filePaths.hex,(err, data) => {
         const encryptedData = encrypt(data, encryptionData)
         writeSomethingToFile(encryptedData, filePaths.hexEncrypted, encoding.hex, (err, data) => {
@@ -109,6 +115,34 @@ function encriptaFitxers(filePaths, encryptionData, encoding){
             })
         })
     }, encoding.hex)
+
+}
+/**
+ * Desencripta fitxers 
+ * Funció que executará la 3era part de l'exercici
+ * Crea una altra funció que desencripti i descodifiqui els fitxers
+ * de l'apartat anterior tornant a generar una còpia de l'inicial.
+ * @param {Object} filePaths 
+ * @param {Object} encryptionData 
+ * @param {Object} encoding 
+ */
+function desencriptaFitxers (filePaths, encryptionData, encoding){
+
+    //decrypt encrypted base64 file and then create a new one
+    readSomethingFromFile(filePaths.base64Encrypted, (err, data) => {
+        const decryptedData = decrypt(data, encryptionData, encoding.base64).toString()
+        writeSomethingToFile(decryptedData, filePaths.base64, encoding.base64, (err, data) => {
+            if(!err) console.log(`S'ha creat el fitxer ${filePaths.base64}`)
+        })
+    })
+    //decrypt encrypted hex file and then create a new one
+    readSomethingFromFile(filePaths.hexEncrypted, (err, data) => {
+        const decryptedData = decrypt(data, encryptionData, encoding.hex).toString()
+        writeSomethingToFile(decryptedData, filePaths.hex, encoding.hex, (err, data) => {
+            if(!err) console.log(`S'ha creat el fitxer ${filePaths.hex}`)
+        })
+    })
+
 
 }
 
@@ -158,16 +192,16 @@ const encoding = {
 
 const encryptionData = {
     algorithm : 'aes-256-cbc',
-    key : crypto.randomBytes(32),
+    key: crypto.createHash('sha256').update(String('MySuperSecretKey')).digest('base64').substring(0, 32),
     iv : crypto.randomBytes(16)
 }
 
 
 // - PAS 1 Creant fitxers
-
-creaFitxersHexBase64(filePaths, encoding);
+//creaFitxersHexBase64(filePaths, encoding);
 
 // - PAS 2 Encriptació
-// encriptaFitxers(filePaths, encryptionData)
+//encriptaFitxers(filePaths, encryptionData, encoding)
 
 // - PAS 3 Desencriptació
+// desencriptaFitxers(filePaths, encryptionData, encoding)
