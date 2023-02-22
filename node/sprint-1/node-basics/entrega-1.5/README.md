@@ -27,5 +27,5 @@ $ node node/sprint-1/node-basics/entrega-1.5/nivell-3.js
 * Para ejecutar la primera tarea, tiene que descomentar la línea 201 del fichero nivell-3.js
 * Para ejecutar la segunda tarea, tiene que descomentar la línea 204 i comentar la línea 
 201 del fichero nivell-3.js
-* Para ejecutar la tercera tarea, tiene que descomentar la línea 27 i tener comentado
+* Para ejecutar la tercera tarea, tiene que descomentar la línea 207 i tener comentado
 la línia 201 i 204
