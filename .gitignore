@@ -1,2 +1,6 @@
 text.txt
 text.txt.gz
+base64.data
+base64.data.enc
+hex.data
+hex.data.enc
