@@ -1,0 +1,14 @@
+{
+  "name": "entrega1.6",
+  "version": "1.0.0",
+  "description": "Exercicis de la entrega 1.6 de nodejs basics",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Razon Miah",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.4.3"
+  }
+}
