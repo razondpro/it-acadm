@@ -19,7 +19,7 @@ Crea una funció que retorni una Promise que invoqui la funció resolve() o reje
  Crea una arrow function que rebi un paràmetre i una funció callback i li passi a la funció un missatge
   o un altre (que s'imprimirà per consola) en funció del paràmetre rebut.*/
 
-  const fArrow = (param, cb) => param? cb('Aixó es true'): cb('Aixó es true')
+  const fArrow = (param, cb) => param? cb('Aixó es true'): cb('Aixó es false')
 
   const cb = (param) => console.log(param)
 
