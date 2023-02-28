@@ -44,7 +44,8 @@ Crea una altra arrow function getSalary() similar a l'anterior que rebi com a pa
 */
 
 const getSalary = (employee) => new Promise((resolve, reject) => {
-    if(!employee.id)
+    const e = employees.find((e => e.id == employee.id )) 
+    if(!e)
         reject(`There is no salary for employee: ${employee}`)
     else {
         const salary = salaries.find((salary => salary.id == employee.id)) 
