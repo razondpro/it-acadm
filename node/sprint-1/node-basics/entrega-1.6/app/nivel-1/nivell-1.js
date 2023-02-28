@@ -1,5 +1,7 @@
 import { isNanException, isZeroExecption } from "./errors"
 
+
+///////////////////////////// EXERCICI 1////////////////////////////////////
 /**
  * Suma dos numeros 
  * @param {number} num1 
@@ -55,9 +57,84 @@ function dividir (num1, num2){
     return num1 / num2
 }
 
+//////////// FI EXERCICI 1 ///////////////
+
+///////// EXERCICI 2///////////////////
+ /*Crea una arrow function que rebi un paràmetre i una funció callback i li passi a la 
+ funció un missatge o un altre (que s'imprimirà per consola) en funció del paràmetre rebut.*/
+
+  const funcioArrow = (param, cb) => param? cb('Aixó es true'): cb('Aixó es false')
+
+  const funcioCb = (param) => console.log(param)
+
+/////////// FI EXERCICI 2 /////////////////
+
+/// EXERCICI 3/////////////////////////////////////////
+
+
+let employees = [{
+    id: 1,
+    name: 'Linux Torvalds'
+}, {
+    id: 2,
+    name: 'Bill Gates'
+},{
+    id: 3,
+    name: 'Jeff Bezos'
+}];
+ 
+let salaries = [{
+    id: 1,
+    salary: 4000
+}, {
+    id: 2,
+    salary: 1000
+}, {
+    id: 3,
+    salary: 2000
+}];
+
+/**
+ * Retorna empleat per id 
+ * @param {number} id 
+ * @returns 
+ */
+const getEmployee = (id) => new Promise((resolve, reject) => {
+    const employee = employees.find((employee => employee.id == id )) 
+    if(employee)
+        resolve(employee)
+    else
+        reject(`There is no employee with id: ${id}`)
+})
+
+
+/**
+ * Retorn el salari d'un empleat
+ * @param {object} employee 
+ * @returns 
+ */
+const getSalary = (employee) => new Promise((resolve, reject) => {
+    if(!employee.id)
+        reject(`There is no salary for employee: ${employee}`)
+    else {
+        const salary = salaries.find((salary => salary.id == employee.id)) 
+        resolve(salary.salary)
+    }
+        
+})
+
+
+/////////////////// FI EXERCICI 3 /////////////////
+
+
+
 module.exports = {
     sumar,
     multiplicar,
     restar,
-    dividir
+    dividir,
+    funcioArrow,
+    funcioCb,
+    getEmployee,
+    getSalary
 }

@@ -1,5 +1,5 @@
 import * as Errors from '../../app/nivel-1/errors'
-import * as MathOperations from '../../app/nivel-1/nivell-1'
+import * as NivellU from '../../app/nivel-1/nivell-1'
 
 describe('Level 1 tests', () => {
 
@@ -7,70 +7,96 @@ describe('Level 1 tests', () => {
 
         describe('Addition', () => {
             it('adds two numbers correctly', () => {
-                expect(MathOperations.sumar(1,2)).toBe(3)
+                expect(NivellU.sumar(1,2)).toBe(3)
             })
 
             it('throws NanExpection when params are not numbers', () => {
-                expect(() => MathOperations.sumar("s",20)).toThrow(Errors.isNanException)
+                expect(() => NivellU.sumar("s",20)).toThrow(Errors.isNanException)
             })
 
             it('expection message matches with provided message', () => {
-                expect(() => MathOperations.sumar("s",20)).toThrow('Please provide a valid number for addition')
+                expect(() => NivellU.sumar("s",20)).toThrow('Please provide a valid number for addition')
             })
         })
 
         describe('Subtraction', () => {
             it('Subtract of two numbers correctly', () => {
-                expect(MathOperations.restar(1,2)).toBe(-1)
+                expect(NivellU.restar(1,2)).toBe(-1)
             })
 
             it('throws NanExpection when params are not numbers', () => {
-                expect(() => MathOperations.restar("s",20)).toThrow(Errors.isNanException)
+                expect(() => NivellU.restar("s",20)).toThrow(Errors.isNanException)
             })
 
             it('expection message matches with provided message', () => {
-                expect(() => MathOperations.restar("s",20)).toThrow('Please provide a valid number for subtraction')
+                expect(() => NivellU.restar("s",20)).toThrow('Please provide a valid number for subtraction')
             })
         })
 
         describe('Multiply', () => {
             it('Multiplies two numbers correctly', () => {
-                expect(MathOperations.multiplicar(1,2)).toBe(2)
+                expect(NivellU.multiplicar(1,2)).toBe(2)
             })
 
             it('throws NanExpection when params are not numbers', () => {
-                expect(() => MathOperations.multiplicar("s",20)).toThrow(Errors.isNanException)
+                expect(() => NivellU.multiplicar("s",20)).toThrow(Errors.isNanException)
             })
 
             it('expection message matches with provided message', () => {
-                expect(() => MathOperations.multiplicar("s",20)).toThrow('Please provide a valid number to multiply')
+                expect(() => NivellU.multiplicar("s",20)).toThrow('Please provide a valid number to multiply')
             })
         })
 
         describe('Divide', () => {
             it('Divides two numbers correctly', () => {
-                expect(MathOperations.dividir(4,2)).toBe(2)
+                expect(NivellU.dividir(4,2)).toBe(2)
             })
 
             it('throws NanExpection when params are not numbers', () => {
-                expect(() => MathOperations.dividir("s",20)).toThrow(Errors.isNanException)
+                expect(() => NivellU.dividir("s",20)).toThrow(Errors.isNanException)
             })
 
             it('expection message matches with provided message', () => {
-                expect(() => MathOperations.dividir("s",20)).toThrow('Please provide a valid number to divide')
+                expect(() => NivellU.dividir("s",20)).toThrow('Please provide a valid number to divide')
             })
 
             it('throws isZeroExecption when divided by zero', () => {
-                expect(() => MathOperations.dividir(0,20)).toThrow(Errors.isZeroExecption)
+                expect(() => NivellU.dividir(0,20)).toThrow(Errors.isZeroExecption)
             })
 
             it('throws isZeroExecption when divided by zero', () => {
-                expect(() => MathOperations.dividir(0,20)).toThrow('Cannot be divided by Zero')
+                expect(() => NivellU.dividir(0,20)).toThrow('Cannot be divided by Zero')
             })
         })
 
 
     })
+
+    describe('Callbacks tests', () => {
+
+        
+        const mockCallback = jest.fn(x => console.log(x));
+
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('calls callback function once', () => {
+            NivellU.funcioArrow(true, mockCallback)
+            expect(mockCallback.mock.calls).toHaveLength(1)
+        })
+
+        it('logs -Aixó es true- when true passed as param in callback', () => {
+            NivellU.funcioArrow(true, mockCallback)
+            expect(mockCallback.mock.calls[0][0]).toBe('Aixó es true')
+        })
+
+        it('logs -Aixó es false- when false passed as param in callback', () => {
+            NivellU.funcioArrow(false, mockCallback)
+            expect(mockCallback.mock.calls[0][0]).toBe('Aixó es false')
+        })
+
+    } )
 
 })
 
