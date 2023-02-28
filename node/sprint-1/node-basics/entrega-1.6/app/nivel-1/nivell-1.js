@@ -112,9 +112,10 @@ const getEmployee = (id) => new Promise((resolve, reject) => {
  * Retorn el salari d'un empleat
  * @param {object} employee 
  * @returns 
- */
+ **/
 const getSalary = (employee) => new Promise((resolve, reject) => {
-    if(!employee.id)
+    const e = employees.find((e => e.id == employee.id )) 
+    if(!e)
         reject(`There is no salary for employee: ${employee}`)
     else {
         const salary = salaries.find((salary => salary.id == employee.id)) 

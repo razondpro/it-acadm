@@ -96,7 +96,43 @@ describe('Level 1 tests', () => {
             expect(mockCallback.mock.calls[0][0]).toBe('Aixó es false')
         })
 
-    } )
+    })
+
+    describe('Promises tests', () => {
+
+        describe('Employees' , () => {
+
+            it('returns employee with id 1', () => {
+                return NivellU.getEmployee(1).then(data => {
+                    expect(data).toEqual({id: 1, name: 'Linux Torvalds'})
+                })
+            })
+
+            it('rejects when employee doesnt match', () => {
+                return NivellU.getEmployee(4).catch(err => {
+                    expect(err).toMatch('There is no employee with id: 4')
+                })
+            })
+        })
+
+        describe('Salaries' , () => {
+
+            it('returns salary of employee with id 1', () => {
+                const fakeEmployee = { id:1, name:'Linux Torvalds'}
+                return NivellU.getSalary(fakeEmployee).then(data => {
+                    expect(data).toBe(4000)
+                })
+            })
+
+            it('rejects when employees id doesnt match', () => {
+                const fakeEmployee = { id:5, name:'Linux Torvalds'}
+                return NivellU.getSalary(fakeEmployee).catch(err => {
+                    expect(err).toMatch(`There is no salary for employee: ${fakeEmployee}`)
+                })
+            })
+        })
+
+    })
 
 })
 
