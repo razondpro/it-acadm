@@ -78,7 +78,7 @@ describe('Level 1 tests', () => {
         const mockCallback = jest.fn(x => console.log(x));
 
         afterEach(() => {
-            jest.clearAllMocks();
+            mockCallback.mockClear();
         });
 
         it('calls callback function once', () => {
