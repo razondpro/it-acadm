@@ -1,4 +1,4 @@
-import * as Errors from '../../app/nivel-1/errors'
+import * as Errors from '../../app/errors'
 import * as NivellU from '../../app/nivel-1/nivell-1'
 
 describe('Level 1 tests', () => {
@@ -137,14 +137,14 @@ describe('Level 1 tests', () => {
     describe('Async tests', () => {
 
         it('executes async function properly', async () => {
-            const data = await NivellU.funcioAsync()
+            const data = await NivellU.executaPromise()
             expect(data).toBe('Executat')
         })
 
         it('executes setTimeout inside function', async () => {
 
             jest.spyOn(global, 'setTimeout')
-            const data = await NivellU.funcioAsync()
+            const data = await NivellU.executaPromise()
             expect(setTimeout).toHaveBeenCalledTimes(1)
             expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 2000)
         })

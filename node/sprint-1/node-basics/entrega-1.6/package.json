@@ -6,17 +6,9 @@
   "scripts": {
     "test": "jest"
   },
-  "jest": {
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    }
-  },
   "author": "Razon Miah",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.21.0",
-    "@babel/preset-env": "^7.20.2",
-    "babel-jest": "^29.4.3",
     "jest": "^29.4.3"
   }
 }

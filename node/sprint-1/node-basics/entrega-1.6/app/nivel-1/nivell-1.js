@@ -1,4 +1,4 @@
-import { isNanException, isZeroExecption } from "./errors"
+import { isNanException, isZeroExecption } from '../errors'
 
 
 ///////////////////////////// EXERCICI 1////////////////////////////////////
@@ -144,8 +144,7 @@ async function executaPromise(){
 ///////////////// FI EXERCICI 4 ///////////////////
 
 
-
-module.exports = {
+export {
     sumar,
     multiplicar,
     restar,
@@ -154,5 +153,5 @@ module.exports = {
     funcioCb,
     getEmployee,
     getSalary,
-    funcioAsync: executaPromise
+    executaPromise
 }
