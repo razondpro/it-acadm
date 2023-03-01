@@ -5,20 +5,37 @@
 
 
 // NOTA IMPORTANTE ----NO SE PUEDE INSTANCIAR UNA CLASE ABSTRACTA ----
+// JS NO TIENE IMPLEMENTACION DE CLASES ABSTRACTAS
 
-class Persona {
-    constructor (nom) {
-        this.nom = nom
+
+
+class Person {
+    constructor() {
+      if (this.constructor == Person) {
+        throw new Error('You can not create an instance of Abstract Class');
+          
+        }
+      }
+
+      sayName() {
+          throw new Error('Added abstract Method has no implementation');
+      }
+  }
+
+class Teacher extends Person {
+    constructor (name) {
+        super()
+        this.name = name
     }
 
-    dirNom(){
-        console.log(this.nom)
+    sayName(){
+        console.log(this.name)
     }
 }
 
-const creaPersona = (nom) => new Persona(nom);
+const createTeacher = (name) => new Teacher(name);
 
-const razon = creaPersona('Razon')
-const miah = creaPersona('Miah')
+const razon = createTeacher('Razon')
+const miah = createTeacher('Miah')
 
-console.log(razon,miah)
+console.log(razon, miah)

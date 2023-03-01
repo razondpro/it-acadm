@@ -128,6 +128,22 @@ const getSalary = (employee) => new Promise((resolve, reject) => {
 /////////////////// FI EXERCICI 3 /////////////////
 
 
+////////////////// EXERCICI 4 /////////////////////
+
+function retornaPromise() {
+    return new Promise( resolve => {
+        setTimeout(() => resolve('Executat'),2000)
+    });
+}
+
+async function executaPromise(){
+    return await retornaPromise()
+}
+
+
+///////////////// FI EXERCICI 4 ///////////////////
+
+
 
 module.exports = {
     sumar,
@@ -137,5 +153,6 @@ module.exports = {
     funcioArrow,
     funcioCb,
     getEmployee,
-    getSalary
+    getSalary,
+    funcioAsync: executaPromise
 }

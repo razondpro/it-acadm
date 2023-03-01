@@ -134,5 +134,22 @@ describe('Level 1 tests', () => {
 
     })
 
+    describe('Async tests', () => {
+
+        it('executes async function properly', async () => {
+            const data = await NivellU.funcioAsync()
+            expect(data).toBe('Executat')
+        })
+
+        it('executes setTimeout inside function', async () => {
+
+            jest.spyOn(global, 'setTimeout')
+            const data = await NivellU.funcioAsync()
+            expect(setTimeout).toHaveBeenCalledTimes(1)
+            expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 2000)
+        })
+
+    })
+
 })
 
