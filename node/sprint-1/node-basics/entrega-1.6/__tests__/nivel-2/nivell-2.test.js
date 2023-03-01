@@ -1,7 +1,8 @@
 import * as NivellDos from '../../app/nivel-2/nivell-2'
 import * as Errors from '../../app/errors'
 import Persona  from '../../app/nivel-2/persona'
-import Teacher from '../../app/nivel-2/abstract-persona'
+import Person from '../../app/nivel-2/abstract-persona'
+import {Teacher, createTeacher} from '../../app/nivel-2/teacher'
 
 jest.mock('../../app/nivel-2/Persona')
 
@@ -77,6 +78,25 @@ describe('Level 2 tests', () => {
             expect(mockDirNom).toHaveBeenCalledTimes(1)
         })
 
+    })
+
+
+    describe('Abstract class suites', () => {
+        
+        it('throws an error when try to instantiate', () => {
+            expect(() => {
+                new Person()
+            }).toThrow('You can not create an instance of Abstract Class')
+        })
+
+        it('creates object of class extended from abstract class', () => {
+            expect(createTeacher('Razon')).toBeInstanceOf(Person)
+        })
+
+        
+        it('creates Teacher object', () => {
+            expect(createTeacher('Razon')).toBeInstanceOf(Teacher)
+        })
     })
 
 })
