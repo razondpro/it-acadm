@@ -1,6 +1,9 @@
 import * as NivellDos from '../../app/nivel-2/nivell-2'
 import * as Errors from '../../app/errors'
+import Persona  from '../../app/nivel-2/persona'
+import Teacher from '../../app/nivel-2/abstract-persona'
 
+jest.mock('../../app/nivel-2/Persona')
 
 
 describe('Level 2 tests', () => {
@@ -49,5 +52,31 @@ describe('Level 2 tests', () => {
     })
 
 
-    
+    describe('Class suites', () => {
+
+        beforeEach(() => {
+            // Clear all instances and calls to constructor and all methods:
+            Persona.mockClear();
+        });
+
+        it('calls the constructor method', () => {
+            const persona = new Persona('Razon')
+            expect(Persona).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls dirNom method', () => {
+            expect(Persona).not.toHaveBeenCalled()
+
+            const persona = new Persona('Razon')
+
+            persona.dirNom();
+
+            //mocked method
+            const mockDirNom = Persona.mock.instances[0].dirNom
+
+            expect(mockDirNom).toHaveBeenCalledTimes(1)
+        })
+
+    })
+
 })

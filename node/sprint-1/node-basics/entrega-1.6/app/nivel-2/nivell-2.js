@@ -34,6 +34,9 @@ async function sumar(num1, num2, num3) {
         await doblaNum(num3);
     return suma;    
 }
+
+//////////////////// FI EXERCICI 1//////////////
+
 export {
     sumar,
     doblaNum
