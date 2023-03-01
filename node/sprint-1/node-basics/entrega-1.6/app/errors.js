@@ -15,7 +15,7 @@ class isZeroExecption extends Error {
 }
 
 
-export {
+module.exports = {
     isNanException,
     isZeroExecption
 }
