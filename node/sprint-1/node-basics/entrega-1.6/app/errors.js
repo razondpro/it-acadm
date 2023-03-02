@@ -14,8 +14,15 @@ class isZeroExecption extends Error {
     }
 }
 
-
+class FileReadExection extends Error {
+    constructor(message, code) {
+        super(message || 'Can not read file')
+        this.code = code
+        this.name = 'FileReadExection'
+    }
+}
 module.exports = {
     isNanException,
-    isZeroExecption
+    isZeroExecption,
+    FileReadExection
 }
