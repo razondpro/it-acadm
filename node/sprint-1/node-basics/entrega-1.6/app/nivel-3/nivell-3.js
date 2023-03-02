@@ -11,7 +11,7 @@ const getEmployee =(id) => new Promise(async (resolve, reject) => {
 
     const data = await readEmpleatFile()
     //employees at 1st position, salaries 2nd position
-    const employees = handleFile(data)[0];
+    const employees = handleFile(data).empleats;
 
     const employee = employees.find((employee => employee.id == id )) 
     if(employee)
@@ -29,8 +29,8 @@ const getSalary = async (employee) => new Promise(async (resolve, reject) => {
 
     const data = await readEmpleatFile()
     //employees at 1st position, salaries 2nd position
-    const employees = handleFile(data)[0];
-    const salaries = handleFile(data)[1];
+    const employees = handleFile(data).empleats;
+    const salaries = handleFile(data).salaries;
 
     const e = employees.find((e => e.id == employee.id )) 
 
@@ -44,15 +44,14 @@ const getSalary = async (employee) => new Promise(async (resolve, reject) => {
 })
 
 /**
- * Llegeix un fitxer de manera asincrona
+ * Read employee file
 */
 async function readEmpleatFile(){
     let data;
     try {
-        data = await fs.promises.readFile('./empleats.json')
+        data = await readFile('./app/nivel-3/empleats.json')
     }
     catch(err){
-        console.log(err)
         throw new FileReadExection('Can not read files')
     }
     return data;
@@ -67,11 +66,20 @@ function handleFile(fileData) {
     return JSON.parse(fileData)
 }
 
+/**
+ * Reads a file
+ * @param {string} path 
+ * @returns 
+ */
+async function readFile(path){
+    return await fs.promises.readFile(path)
+}
 
 
 export {
     getEmployee,
     getSalary,
     readEmpleatFile,
-    handleFile
+    handleFile,
+    readFile
 }
