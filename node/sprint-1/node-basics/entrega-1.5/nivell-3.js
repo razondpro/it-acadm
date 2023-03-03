@@ -8,6 +8,7 @@ Inclou un README amb instruccions per a l'execució de cada part.
 
 const fs = require('fs')
 const crypto = require('crypto')
+const buffer = require('buffer');
 
 /**
  * Crea un fitxer i guarda un string en ell
@@ -48,18 +49,13 @@ function encrypt(dataToEncrypt, encryptionData) {
     // Creating Cipheriv with its parameter
     const cipher = crypto.createCipheriv(
         encryptionData.algorithm, 
-        Buffer.from(encryptionData.key),
+        encryptionData.key,
         encryptionData.iv)
 
-    // Using concatenation
-    encrypted = Buffer.concat([
-        encryptionData.iv, 
+    return Buffer.concat([
         cipher.update(dataToEncrypt), 
         cipher.final()
     ])
-
-    // Returning encrypted data
-    return encrypted
 }
 /**
  * Rep un string y el desencripta 
@@ -69,15 +65,11 @@ function encrypt(dataToEncrypt, encryptionData) {
  * @returns decrypted data
  */
 function decrypt(dataToDecrypt, encryptionData,){
-
-    const iv = dataToDecrypt.slice(0, 16);
-    const encryptedText = dataToDecrypt.slice(16);
-    
     // Creating Decipher
     const decipher = crypto.createDecipheriv(
-        encryptionData.algorithm, Buffer.from(encryptionData.key), iv);
+        encryptionData.algorithm, encryptionData.key, encryptionData.iv);
 
-    return Buffer.concat([decipher.update(encryptedText), decipher.final()]);
+    return decipher.update(dataToDecrypt)
 }
 
 /**
@@ -121,7 +113,7 @@ async function desencriptaFitxers (filePaths, encryptionData, encoding){
     //decrypt encrypted hex file and then create a new one
     const hexData = await readSomethingFromFile(filePaths.hexEncrypted, encoding.hex)
     const hexDecryptedData = decrypt(hexData, encryptionData).toString()
-    await writeSomethingToFile(filePaths.base64, hexDecryptedData, encoding.hex)
+    await writeSomethingToFile(filePaths.hex, hexDecryptedData, encoding.hex)
 }
 
 /**
@@ -161,16 +153,16 @@ const encoding = {
 
 const encryptionData = {
     algorithm : 'aes-256-cbc',
-    key: crypto.createHash('sha256').update(String('MySuperSecretKey')).digest('base64').substring(0, 32),
-    iv : crypto.randomBytes(16)
+    key: crypto.pbkdf2Sync('prancypoodle', 'sherylcrowe', 10000, 32, 'sha512'),
+    iv : Buffer.from('1234567812345678', 'binary')
 }
 
 
 // - PAS 1 Creant fitxers
-// creaFitxersHexBase64(filePaths, encoding);
+//creaFitxersHexBase64(filePaths, encoding);
 
 // - PAS 2 Encriptació
-// encriptaFitxers(filePaths, encryptionData, encoding)
+//encriptaFitxers(filePaths, encryptionData, encoding)
 
 // - PAS 3 Desencriptació
-desencriptaFitxers(filePaths, encryptionData, encoding)
+//desencriptaFitxers(filePaths, encryptionData, encoding)

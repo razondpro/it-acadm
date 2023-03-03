@@ -24,8 +24,9 @@ $ node node/sprint-1/node-basics/entrega-1.5/nivell-3.js
 ```
 
 ### Cosas a tener cuenta para la correcta ejecución del programa.
-* Para ejecutar la primera tarea, tiene que descomentar la línea 201 del fichero nivell-3.js
-* Para ejecutar la segunda tarea, tiene que descomentar la línea 204 i comentar la línea 
-201 del fichero nivell-3.js
-* Para ejecutar la tercera tarea, tiene que descomentar la línea 207 i tener comentado
-la línia 201 i 204
+* Para ejecutar la primera tarea, tiene que descomentar la línea 162 del fichero nivell-3.js
+y tener comentado las lineas 165 y 168
+* Para ejecutar la segunda tarea, tiene que descomentar la línea 165 i comentar la línea 
+162 y 168 del fichero nivell-3.js
+* Para ejecutar la tercera tarea, tiene que descomentar la línea 168 i tener comentado
+la línia 162 i 165
