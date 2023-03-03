@@ -11,23 +11,22 @@ const crypto = require('crypto')
 
 /**
  * Crea un fitxer i guarda un string en ell
- * @param {string} something string que es guardará
+ * creará un fitxer en la carpeta del projecte
  * @param {string} path nom del fitxer
+ * @param {string} something string que es guardará
  * @param {string} encoding tipus de encode
  */
-function writeSomethingToFile(something, path, encoding, cb){
-    // creará un fitxer en la carpeta del projecte
-    fs.writeFile(path, something, encoding, cb)
+async function writeSomethingToFile(path, something, encoding){
+    await fs.promises.writeFile(path, something, encoding)
 }
 
 /**
  * Llegeix un fitxer
  * @param {string} path el path del fitxer
  * @param {string} encoding tipus de encode
- * @param {Function} cb callback que s'executará despres de llegir
  */
-function readSomethingFromFile(path, cb, encoding){
-    fs.readFile(path, encoding, cb)
+async function readSomethingFromFile(path, encoding){
+    return await fs.promises.readFile(path, encoding)
 }
 
 /**
@@ -35,8 +34,8 @@ function readSomethingFromFile(path, cb, encoding){
  * @param {string} path 
  * @param {Function} cb 
  */
-function deleteFile(path, cb){
-    fs.unlink(path, cb)
+async function deleteFile(path, cb){
+    await fs.promises.unlink(path, cb)
 }
 /**
  * Rep un string y l'encripta 
@@ -67,10 +66,9 @@ function encrypt(dataToEncrypt, encryptionData) {
  * https://gist.githubusercontent.com/anned20/fcb3a97e8281b608bfcb4d046a640fe7/raw/75db3ee1159e53a08fa1709dd9e7eeef1414958f/encryption.js
  * @param {string} dataToEncrypt text a desencriptar
  * @param {Object} encryptionData opcions d'desencriptacio
- * @param {string} encode tipus de encode del text
  * @returns decrypted data
  */
-function decrypt(dataToDecrypt, encryptionData, encode){
+function decrypt(dataToDecrypt, encryptionData,){
 
     const iv = dataToDecrypt.slice(0, 16);
     const encryptedText = dataToDecrypt.slice(16);
@@ -92,30 +90,18 @@ function decrypt(dataToDecrypt, encryptionData, encode){
  * @param {Object} encryptionData dades d'encriptacio
  * @param {Object} encoding tipus de encodes de fitxers
  */
-function encriptaFitxers(filePaths, encryptionData, encoding){
-
+async function encriptaFitxers(filePaths, encryptionData, encoding){
     // llegim..creem i eliminem base64
-    readSomethingFromFile(filePaths.base64,(err, data) => {
-        const encryptedData = encrypt(data, encryptionData)
-        writeSomethingToFile(encryptedData, filePaths.base64Encrypted, encoding.base64, (err, data) => {
-            if(!err) console.log(`S'ha creat el fitxer ${filePaths.base64Encrypted}`)
-            deleteFile(filePaths.base64, (err, data) => {
-                if(!err) console.log(`S'ha eliminat el fitxer ${filePaths.base64}`)
-            })
-        })
-    }, encoding.base64)
+    const base64Data = await readSomethingFromFile(filePaths.base64, encoding.base64)
+    const base64EncryptedData = encrypt(base64Data, encryptionData)
+    await writeSomethingToFile(filePaths.base64Encrypted, base64EncryptedData, encoding.base64)
+    await deleteFile(filePaths.base64)
 
     // llegim..creem i eliminem hex
-    readSomethingFromFile(filePaths.hex,(err, data) => {
-        const encryptedData = encrypt(data, encryptionData)
-        writeSomethingToFile(encryptedData, filePaths.hexEncrypted, encoding.hex, (err, data) => {
-            if(!err) console.log(`S'ha creat el fitxer ${filePaths.hexEncrypted}`)
-            deleteFile(filePaths.hex, (err, data) => {
-                if(!err) console.log(`S'ha eliminat el fitxer ${filePaths.hex}`)
-            })
-        })
-    }, encoding.hex)
-
+    const hexData = await readSomethingFromFile(filePaths.hex, encoding.hex)
+    const hexEncryptedData = encrypt(hexData, encryptionData)
+    await writeSomethingToFile(filePaths.hexEncrypted, hexEncryptedData, encoding.hex)
+    await deleteFile(filePaths.hex)
 }
 /**
  * Desencripta fitxers 
@@ -126,24 +112,16 @@ function encriptaFitxers(filePaths, encryptionData, encoding){
  * @param {Object} encryptionData 
  * @param {Object} encoding 
  */
-function desencriptaFitxers (filePaths, encryptionData, encoding){
-
+async function desencriptaFitxers (filePaths, encryptionData, encoding){
     //decrypt encrypted base64 file and then create a new one
-    readSomethingFromFile(filePaths.base64Encrypted, (err, data) => {
-        const decryptedData = decrypt(data, encryptionData, encoding.base64).toString()
-        writeSomethingToFile(decryptedData, filePaths.base64, encoding.base64, (err, data) => {
-            if(!err) console.log(`S'ha creat el fitxer ${filePaths.base64}`)
-        })
-    })
+    const base64Data = await readSomethingFromFile(filePaths.base64Encrypted, encoding.base64)
+    const base64DecryptedData = decrypt(base64Data, encryptionData).toString()
+    await writeSomethingToFile(filePaths.base64, base64DecryptedData, encoding.base64)
+
     //decrypt encrypted hex file and then create a new one
-    readSomethingFromFile(filePaths.hexEncrypted, (err, data) => {
-        const decryptedData = decrypt(data, encryptionData, encoding.hex).toString()
-        writeSomethingToFile(decryptedData, filePaths.hex, encoding.hex, (err, data) => {
-            if(!err) console.log(`S'ha creat el fitxer ${filePaths.hex}`)
-        })
-    })
-
-
+    const hexData = await readSomethingFromFile(filePaths.hexEncrypted, encoding.hex)
+    const hexDecryptedData = decrypt(hexData, encryptionData).toString()
+    await writeSomethingToFile(filePaths.base64, hexDecryptedData, encoding.hex)
 }
 
 /**
@@ -153,25 +131,16 @@ function desencriptaFitxers (filePaths, encryptionData, encoding){
  * @param {Object} filePaths direccions de fitxers
  * @param {Object} encoding tipus de encodes
  */
-function creaFitxersHexBase64(filePaths, encoding){
+async function creaFitxersHexBase64(filePaths, encoding){
     //crea fitxer
-    writeSomethingToFile('Guardant dades als fitxers', filePaths.text, encoding.utf8, (err, data) => {
-        if(!err) console.log(`S'ha creat el fitxer ${filePaths.text}`)
-    })
+    await writeSomethingToFile(filePaths.text, 'Guardant dades als fitxers', encoding.utf8)
+    const data = await readSomethingFromFile(filePaths.text, encoding.utf8)
 
     //create file base64
-    readSomethingFromFile(filePaths.text,(err, data) => {
-        writeSomethingToFile(data, filePaths.base64, encoding.base64, (err, data) => {
-            if(!err) console.log(`S'ha creat el fitxer ${filePaths.base64}`)
-        })
-    }, encoding.utf8)
+    await writeSomethingToFile(filePaths.base64, data, encoding.base64)
 
     //create file hex
-    readSomethingFromFile(filePaths.text,(err, data) => {
-        writeSomethingToFile(data, filePaths.hex, encoding.hex, (err, data) => {
-            if(!err) console.log(`S'ha creat el fitxer ${filePaths.hex}`)
-        })
-    }, encoding.hex)
+    await writeSomethingToFile(filePaths.hex, data, encoding.hex)
 }
 
 /*****************EXECUCIO PROGRAMA*************************** */
@@ -198,10 +167,10 @@ const encryptionData = {
 
 
 // - PAS 1 Creant fitxers
-//creaFitxersHexBase64(filePaths, encoding);
+// creaFitxersHexBase64(filePaths, encoding);
 
 // - PAS 2 Encriptació
-//encriptaFitxers(filePaths, encryptionData, encoding)
+// encriptaFitxers(filePaths, encryptionData, encoding)
 
 // - PAS 3 Desencriptació
-// desencriptaFitxers(filePaths, encryptionData, encoding)
+desencriptaFitxers(filePaths, encryptionData, encoding)
