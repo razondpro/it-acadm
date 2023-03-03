@@ -10,7 +10,6 @@ const fs = require('fs');
 const getEmployee =(id) => new Promise(async (resolve, reject) => {
 
     const data = await readEmpleatFile()
-    //employees at 1st position, salaries 2nd position
     const employees = handleFile(data).empleats;
 
     const employee = employees.find((employee => employee.id == id )) 
@@ -28,7 +27,6 @@ const getEmployee =(id) => new Promise(async (resolve, reject) => {
 const getSalary = async (employee) => new Promise(async (resolve, reject) => {
 
     const data = await readEmpleatFile()
-    //employees at 1st position, salaries 2nd position
     const employees = handleFile(data).empleats;
     const salaries = handleFile(data).salaries;
 

@@ -14,7 +14,11 @@ let employees = [{
     name: 'Jeff Bezos'
 }];
 
-
+/**
+ * Get employee by id
+ * @param {number} id 
+ * @returns 
+ */
 const getEmployee = (id) => new Promise((resolve, reject) => {
     const employee = employees.find((employee => employee.id == id )) 
     if(employee)

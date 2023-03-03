@@ -5,7 +5,7 @@ describe('Level 3 test suites', () =>  {
 
     describe('Exercici-1', () => {
 
-        it('read files correctly' , async () => {
+        it('reads json files correctly' , async () => {
             expect(async () => await NivellTres.readEmpleatFile()).not.toThrow()
         })
 

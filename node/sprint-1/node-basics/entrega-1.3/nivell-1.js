@@ -2,7 +2,11 @@
 Crea una funció que retorni una Promise que invoqui la funció resolve() o reject() que rep.
  Invoca-la passant-li les dues funcions de manera que imprimeixin un missatge diferent depenent de si la Promise es resol o no. */
 
-
+/**
+ * Executes resolve or reject dependin on boolean param
+ * @param {boolean} resOrRej 
+ * @returns 
+ */
  const fPromise = (resOrRej) => new Promise((resolve, reject) => {
     if(resOrRej)
         resolve(resOrRej)

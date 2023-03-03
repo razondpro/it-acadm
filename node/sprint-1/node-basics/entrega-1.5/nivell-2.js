@@ -22,7 +22,6 @@ function recursiu (num) {
     console.log(`Delayed for ${n}`)
 }
 
-recursiu(10)
 /*
 - Exercici 2
 Crea una funció que llisti per la consola el contingut del directori d'usuari/ària de l'ordinador utilizant Node Child Processes.
@@ -69,4 +68,5 @@ function checkUserDirectory(){
 }
 
 
+recursiu(10)
 checkUserDirectory();

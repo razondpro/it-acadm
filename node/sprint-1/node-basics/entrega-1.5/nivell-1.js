@@ -1,28 +1,27 @@
-/*
-- Exercici 1
-
-Crea una funció que, en executar-la, escrigui una frase en un fitxer.
-
-*/
-
 const fs = require('fs')
 const zlib = require('zlib')
+
+/*
+- Exercici 1
+Crea una funció que, en executar-la, escrigui una frase en un fitxer.
+*/
 
 /**
  * Crea un fitxer i guarda un string en ell
  * @param {string} something string es guardará
+ * @param {string} filePath file path to save
  */
-function writeSomethingToFile(something){
+function writeSomethingToFile(something, filePath){
     // creará un fitxer en la carpeta del projecte
-    fs.writeFile('text.txt',something, (err) => {
-        if(err)
-            console.log(err)
-        else   
-            console.log(`s'ha guardat`)
+    return new Promise((resolve,reject) => {
+        fs.writeFile(filePath, something, (err) => {
+            if(err)
+                reject(err)
+            else   
+                resolve(`File saved to ${filePath}`)
+        })
     })
 }
-
-writeSomethingToFile('Guardant dades al fitxer')
 
 
 /*
@@ -35,16 +34,17 @@ Crea una altra funció que mostri per consola el contingut del fitxer de l'exerc
  * @param {string} path 
  */
 function readSomethingFromFile(path){
-    fs.readFile(path, (err, data) => {
-        if(err)
-            console.log(err)
-        else   
-            console.log(`s'ha llegit: ${data}`)
+
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, (err, data) => {
+            if(err)
+                reject(err)
+            else   
+                resolve(`Reading from File ${path}: ${data}`)
+        })
     })
 }
 
-
-readSomethingFromFile('text.txt')
 
 /*
 
@@ -53,8 +53,23 @@ readSomethingFromFile('text.txt')
 Crea una funció que comprimeixi el fitxer del nivell 1.
 */
 
+function comprimeix (filePath) {
+    const zip = zlib.createGzip();
+    const read = fs.createReadStream(filePath);
+    const write = fs.createWriteStream(`${filePath}.gz`);
+    read.pipe(zip).pipe(write);	
+}
 
-var zip = zlib.createGzip();
-var read = fs.createReadStream('text.txt');
-var write = fs.createWriteStream('text.txt.gz');
-read.pipe(zip).pipe(write);	
+
+const filePath = 'text.txt'
+const data = 'Guardant dades al fitxer'
+
+writeSomethingToFile(data, filePath)
+.then( (val) =>{
+    console.log(val)
+    return readSomethingFromFile(filePath)
+})
+.then( (val) =>{
+    console.log(val)
+    comprimeix(filePath)
+})

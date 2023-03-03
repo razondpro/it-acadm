@@ -25,7 +25,11 @@ let salaries = [{
     salary: 2000
 }];
 
-
+/**
+ * Get employee by id
+ * @param {number} id 
+ * @returns 
+ */
 const getEmployee = (id) => new Promise((resolve, reject) => {
     const employee = employees.find((employee => employee.id == id )) 
     if(employee)
@@ -42,7 +46,11 @@ getEmployee(2)
 - Exercici 2
 Crea una altra arrow function getSalary() similar a l'anterior que rebi com a paràmetre un objecte employee i retorni el seu salari.
 */
-
+/**
+ * Get salary of given employee
+ * @param {object} employee 
+ * @returns 
+ */
 const getSalary = (employee) => new Promise((resolve, reject) => {
     const e = employees.find((e => e.id == employee.id )) 
     if(!e)
