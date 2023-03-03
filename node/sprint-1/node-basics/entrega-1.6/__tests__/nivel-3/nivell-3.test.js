@@ -65,4 +65,33 @@ describe('Level 3 test suites', () =>  {
 
     })
 
+    describe('Exercici 2 ', () => {
+
+        it('throws error when empoyee id is not a number', async () => {
+            try{
+                await NivellTres.getEmployeeDetailsById('s')
+            }catch(err){
+                expect(err.message).toMatch('Please provide a valid employee id')
+            }
+        })
+
+        it('throws error when param is not a number', async () => {
+            try{
+                await NivellTres.sumar('s',2,3)
+            }catch(err){
+                expect(err.message).toMatch('Provide a valid number')
+            }
+        })
+
+        
+        it('throws error when param is not a number', async () => {
+            try{
+                await NivellTres.doblaNum('s')
+            }catch(err){
+                expect(err).toMatch('Please provide a valid number')
+            }
+        })
+
+    })
+
 })
